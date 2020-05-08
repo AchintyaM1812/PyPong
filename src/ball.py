@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 
 pygame.init()
 window_width = 700
@@ -22,4 +23,3 @@ class Ball(object):
 
     def bounce(self):
         pass
-
