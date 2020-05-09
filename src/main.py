@@ -5,6 +5,7 @@
 import pygame
 from pygame.locals import *
 from players import Paddle
+from ball import Ball
 import sys
 
 pygame.init()
@@ -13,7 +14,7 @@ clock = pygame.time.Clock()
 width = 700
 height = 600
 dimensions = (width, height)
-frameRate = 60
+frameRate = 30
 
 red = (255, 0, 0)
 green = (0, 255, 0)
@@ -29,10 +30,13 @@ def refresh():
     pygame.draw.line(window, white, (width / 2, 0), (width / 2, height), 3)
     player.draw(window)
     opponent.draw(window)
+    ball.draw(window)
+    ball.move()
 
 
 player = Paddle(10, height / 2 - 50, 25, 100, green)
 opponent = Paddle(width - 35, height / 2 - 50, 25, 100, green)
+ball = Ball(width / 2, height / 2, 20, 20, red)
 
 running = True
 while running:

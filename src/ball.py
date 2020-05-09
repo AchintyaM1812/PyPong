@@ -13,13 +13,16 @@ class Ball(object):
         self.width = width
         self.height = height
         self.color = color
-        self.velocity = []
+        self.xv = 8
+        self.yv = 8
 
     def draw(self, window):
-        pass
+        pygame.draw.rect(window, self.color,
+                         (self.x, self.y, self.width, self.height))
 
     def move(self):
-        pass
+        self.x += self.xv
+        self.y += self.yv
 
     def bounce(self):
         pass
