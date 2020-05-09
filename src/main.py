@@ -8,6 +8,7 @@ from players import Paddle
 import sys
 
 pygame.init()
+clock = pygame.time.Clock()
 
 width = 700
 height = 600
@@ -19,23 +20,27 @@ green = (0, 255, 0)
 black = (0, 0, 0)
 white = (255, 255, 255)
 
-
 window = pygame.display.set_mode(dimensions)
 pygame.display.set_caption("Pong")
-window.fill(black)
-pygame.draw.line(window, white, (width / 2, 0), (width / 2, height), 3)
+
+
+def refresh():
+    window.fill(black)
+    pygame.draw.line(window, white, (width / 2, 0), (width / 2, height), 3)
+    player.draw(window)
+    opponent.draw(window)
+
 
 player = Paddle(10, height / 2 - 50, 25, 100, green)
 opponent = Paddle(width - 35, height / 2 - 50, 25, 100, green)
-player.draw(window)
-opponent.draw(window)
-
 
 running = True
-clock = pygame.time.Clock()
 while running:
 
+    clock.tick(frameRate)
+
     events = pygame.event.get()
+    pygame.event.pump()
     keys = pygame.key.get_pressed()
 
     for event in events:
@@ -49,14 +54,14 @@ while running:
             if keys[pygame.K_DOWN]:
                 player.moveDown()
 
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_w]:
                 opponent.moveUp()
 
-            if keys[pygame.K_LEFT]:
+            if keys[pygame.K_s]:
                 opponent.moveDown()
 
+    refresh()
     pygame.display.update()
-    clock.tick(frameRate)
 
 pygame.display.quit()
 sys.exit()

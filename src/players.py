@@ -25,11 +25,11 @@ class Paddle():
                          (self.x, self.y, self.width, self.height))
 
     def moveUp(self):
-        if self.y <= 0:
-            self.y = y
         self.y -= self.velocity
+        if self.y <= 0:
+            self.y = 0
 
     def moveDown(self):
-        if self.y >= window_height:
-            self.y = window_height
         self.y += self.velocity
+        if self.y + self.height >= window_height:
+            self.y = window_height - self.height
