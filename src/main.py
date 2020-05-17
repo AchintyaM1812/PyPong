@@ -4,6 +4,7 @@
 
 import pygame
 from pygame.locals import *
+from random import randint
 import sys
 
 pygame.init()
@@ -14,55 +15,68 @@ window_height = 600
 dimensions = (window_width, window_height)
 frameRate = 35
 
-red = (255, 0, 0)
-green = (0, 255, 0)
-black = (0, 0, 0)
-white = (255, 255, 255)
+bgcolor = (25, 25, 25)
+ball_color = (randint(0, 255), randint(0, 255), randint(0, 255))
+paddle_color = (randint(0, 255), randint(0, 255), randint(0, 255))
+line_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
 window = pygame.display.set_mode(dimensions)
 pygame.display.set_caption("Pong")
 
-
-class Paddle():
-    def __init__(self, x, y, width, height, color):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.color = color
-        self.velocity = 7
-
-    def draw(self, window):
-        pygame.draw.rect(window, self.color,
-                         (self.x, self.y, self.width, self.height))
-
-    def moveUp(self):
-        self.y -= self.velocity
-        if self.y <= 0:
-            self.y = 0
-
-    def moveDown(self):
-        self.y += self.velocity
-        if self.y + self.height >= window_height:
-            self.y = window_height - self.height
-
+player = pygame.Rect(window_height / 2, 13, 26, 100)
+opponent = pygame.Rect(window_height / 2, 687, 26, 100)
+paddle_velocity = 7
 
 ball = pygame.Rect(window_width / 2 - 10, window_height / 2 - 10, 20, 20)
 ball_x_velocity = 8
 ball_y_velocity = 8
-player = Paddle(10, window_height / 2 - 50, 25, 100, green)
-opponent = Paddle(window_width - 35, window_height / 2 - 50, 25, 100, green)
+
+
+def draw_paddles():
+    pygame.draw.rect(window, paddle_color, player)
+    pygame.draw.rect(window, paddle_color, opponent)
+
+
+def move_player_paddle_up():
+    if player.top <= 0:
+        player.top = 0
+    player.top -= paddle_velocity
+
+
+def move_opponent_paddle_up():
+    if opponent.top <= 0:
+        oppponent.top = 0
+    opponent.top -= paddle_velocity
+
+
+def move_player_paddle_down():
+    if player.bottom <= window_height:
+        player.bottom = window_height
+    player.bottom += paddle_velocity
+
+
+def move_opponent_paddle_down():
+    if opponent.bottom <= window_height:
+        opponent.bottom = window_height
+    opponent.bottom += paddle_velocity
+
+
+def draw_ball():
+    pygame.draw.ellipse(window, ball_color, ball)
+
+
+def move_ball():
+    ball.x += ball_x_velocity
+    ball.y += ball_y_velocity
 
 
 def refresh():
-    window.fill(black)
-    pygame.draw.line(window, white, (window_width / 2, 0),
+    window.fill(bgcolor)
+    pygame.draw.line(window, line_color, (window_width / 2, 0),
                      (window_width / 2, window_height), 3)
-    pygame.draw.ellipse(window, red, ball)
-    player.draw(window)
-    opponent.draw(window)
-    ball.x += ball_x_velocity
-    ball.y += ball_y_velocity
+    draw_paddles()
+    draw_ball()
+    move_ball()
 
 
 running = True
@@ -80,22 +94,25 @@ while running:
     if ball.left <= 0 or ball.right >= window_width:
         ball_x_velocity *= -1
 
+    if ball.colliderect(player) or ball.colliderect(opponent):
+        ball_x_velocity *= -1
+
     for event in events:
         if event.type == pygame.QUIT:
             running = False
 
         elif event.type == pygame.KEYDOWN:
             if keys[pygame.K_UP]:
-                player.moveUp()
+                move_player_paddle_up()
 
             if keys[pygame.K_DOWN]:
-                player.moveDown()
+                move_player_paddle_down()
 
             if keys[pygame.K_w]:
-                opponent.moveUp()
+                move_opponent_paddle_up()
 
             if keys[pygame.K_s]:
-                opponent.moveDown()
+                move_opponent_paddle_down()
 
     refresh()
     pygame.display.update()
