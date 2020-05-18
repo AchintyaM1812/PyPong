@@ -21,10 +21,10 @@ paddle_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 line_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
 window = pygame.display.set_mode(dimensions)
-pygame.display.set_caption("Pong")
+pygame.display.set_caption("Pong, FPS: " + str(int(clock.get_fps())))
 
-player = pygame.Rect(window_height / 2, 13, 26, 100)
-opponent = pygame.Rect(window_height / 2, 687, 26, 100)
+player = pygame.Rect(10, window_height / 2 - 50, 26, 100)
+opponent = pygame.Rect(window_width - 36, window_height / 2 - 50, 26, 100)
 paddle_velocity = 7
 
 ball = pygame.Rect(window_width / 2 - 10, window_height / 2 - 10, 20, 20)
@@ -45,18 +45,18 @@ def move_player_paddle_up():
 
 def move_opponent_paddle_up():
     if opponent.top <= 0:
-        oppponent.top = 0
+        opponent.top = 0
     opponent.top -= paddle_velocity
 
 
 def move_player_paddle_down():
-    if player.bottom <= window_height:
+    if player.bottom >= window_height:
         player.bottom = window_height
     player.bottom += paddle_velocity
 
 
 def move_opponent_paddle_down():
-    if opponent.bottom <= window_height:
+    if opponent.bottom >= window_height:
         opponent.bottom = window_height
     opponent.bottom += paddle_velocity
 
