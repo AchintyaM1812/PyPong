@@ -25,7 +25,7 @@ pygame.display.set_caption("Pong, FPS: " + str(int(clock.get_fps())))
 
 player = pygame.Rect(10, window_height / 2 - 50, 26, 100)
 opponent = pygame.Rect(window_width - 36, window_height / 2 - 50, 26, 100)
-paddle_velocity = 7
+paddle_velocity = 35
 
 ball = pygame.Rect(window_width / 2 - 10, window_height / 2 - 10, 20, 20)
 ball_x_velocity = 8
