@@ -2,11 +2,11 @@
 # Written by Achintya Mathur
 # Date: 7/05/2020
 
+import sys
 import pygame
 from pygame.locals import *
 from random import randint, choice
 from time import sleep
-import sys
 
 pygame.init()
 clock = pygame.time.Clock()
