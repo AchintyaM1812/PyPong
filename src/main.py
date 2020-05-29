@@ -4,7 +4,7 @@
 
 import pygame
 from pygame.locals import *
-from random import randint
+from random import randint, choice
 import sys
 
 pygame.init()
@@ -70,6 +70,15 @@ def move_ball():
     ball.y += ball_y_velocity
 
 
+def reset_ball_pos():
+    global ball_x_velocity
+    global ball_y_velocity
+    ball.center = (window_width / 2, window_height / 2)
+    choices = (1, -1)
+    ball_x_velocity *= choice(choices)
+    ball_y_velocity *= choice(choices)
+
+
 def refresh():
     window.fill(bgcolor)
     pygame.draw.line(window, line_color, (window_width / 2, 0),
@@ -92,7 +101,8 @@ while running:
         ball_y_velocity *= -1
 
     if ball.left <= 0 or ball.right >= window_width:
-        ball_x_velocity *= -1
+        reset_ball_pos()
+        refresh()
 
     if ball.colliderect(player) or ball.colliderect(opponent):
         ball_x_velocity *= -1
