@@ -5,6 +5,7 @@
 import pygame
 from pygame.locals import *
 from random import randint, choice
+from time import sleep
 import sys
 
 pygame.init()
@@ -13,7 +14,7 @@ clock = pygame.time.Clock()
 window_width = 700
 window_height = 600
 dimensions = (window_width, window_height)
-frameRate = 35
+frameRate = 60
 
 bgcolor = (25, 25, 25)
 ball_color = (randint(0, 255), randint(0, 255), randint(0, 255))
@@ -28,6 +29,9 @@ font_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 player = pygame.Rect(10, window_height / 2 - 50, 26, 100)
 opponent = pygame.Rect(window_width - 36, window_height / 2 - 50, 26, 100)
 paddle_velocity = 35
+
+player_score = 0
+opponent_score = 0
 
 ball = pygame.Rect(window_width / 2 - 10, window_height / 2 - 10, 20, 20)
 ball_x_velocity = 5
@@ -83,12 +87,17 @@ def reset_ball_pos():
     global ball_y_velocity
     ball.center = (window_width / 2, window_height / 2)
     choices = (1, -1)
+    sleep(0.35)
     ball_x_velocity *= choice(choices)
     ball_y_velocity *= choice(choices)
 
 
 def render_fonts():
-    window.blit(get_fps(), (15, 5))
+    window.blit(get_fps(), (10, 5))
+    player_score_fonts = font.render(str(player_score), 1, font_color)
+    opponent_score_fonts = font.render(str(opponent_score), 1, font_color)
+    window.blit(player_score_fonts, (window_width / 4, 5))
+    window.blit(opponent_score_fonts, (window_width * 3 / 4, 5))
 
 
 def refresh():
@@ -113,7 +122,13 @@ while running:
     if ball.top <= 0 or ball.bottom >= window_height:
         ball_y_velocity *= -1
 
-    if ball.left <= 0 or ball.right >= window_width:
+    if ball.left <= 0:
+        opponent_score += 1
+        reset_ball_pos()
+        refresh()
+
+    if ball.right >= window_width:
+        player_score += 1
         reset_ball_pos()
         refresh()
 
