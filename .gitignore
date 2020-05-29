@@ -2,3 +2,4 @@ __pycache__/
 .vscode/
 pongenv/
 src/__pycache__/
+src/.main.py.swp/

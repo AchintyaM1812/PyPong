@@ -21,15 +21,23 @@ paddle_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 line_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
 window = pygame.display.set_mode(dimensions)
-pygame.display.set_caption("Pong, FPS: " + str(int(clock.get_fps())))
+pygame.display.set_caption("Pong")
+font = pygame.font.SysFont("Arial", 18)
+font_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
 player = pygame.Rect(10, window_height / 2 - 50, 26, 100)
 opponent = pygame.Rect(window_width - 36, window_height / 2 - 50, 26, 100)
 paddle_velocity = 35
 
 ball = pygame.Rect(window_width / 2 - 10, window_height / 2 - 10, 20, 20)
-ball_x_velocity = 8
-ball_y_velocity = 8
+ball_x_velocity = 5
+ball_y_velocity = 5
+
+
+def get_fps():
+    fps = str(int(clock.get_fps()))
+    fps_viz = font.render(fps, 1, font_color)
+    return fps_viz
 
 
 def draw_paddles():
@@ -79,10 +87,15 @@ def reset_ball_pos():
     ball_y_velocity *= choice(choices)
 
 
+def render_fonts():
+    window.blit(get_fps(), (15, 5))
+
+
 def refresh():
     window.fill(bgcolor)
     pygame.draw.line(window, line_color, (window_width / 2, 0),
                      (window_width / 2, window_height), 3)
+    render_fonts()
     draw_paddles()
     draw_ball()
     move_ball()
